@@ -6,6 +6,7 @@ const containerStyle: React.CSSProperties = {
     width: '100vw',
     height: '100vh',
     position: 'relative', 
+    
 };
 const center = {
     lat: 40.7128,
@@ -16,11 +17,14 @@ export default function Map() {
     const onClick = () => {
         console.info('I have been clicked!')
     };
+    
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
         googleMapsApiKey: process.env.NEXT_PUBLIC_MAPS_API as string,
     })
+
     const [map, setMap] = React.useState<google.maps.Map | null>(null)
+
     const onLoad = React.useCallback(function callback(map: google.maps.Map | null) {
         if (map) {
             const bounds = new window.google.maps.LatLngBounds(center);
@@ -36,6 +40,7 @@ export default function Map() {
             mapContainerStyle={containerStyle}
             center={center}
             zoom={10}
+            options={{ mapId: "e3f63456b85d9424" }}
             onLoad={onLoad as (map: google.maps.Map | null) => void}
             onUnmount={onUnmount as (map: google.maps.Map | null) => void | Promise<void>}
         >
