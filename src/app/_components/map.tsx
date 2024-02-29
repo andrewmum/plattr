@@ -1,5 +1,4 @@
 import React from 'react'
-import { useMemo } from "react";
 import { GoogleMap, InfoWindow, OverlayView, OverlayViewF, Polygon, useJsApiLoader } from '@react-google-maps/api';
 
 const containerStyle: React.CSSProperties = {
@@ -14,9 +13,6 @@ const center = {
   };
   
 export default function Map() {
-    const onClick = () => {
-        console.info('I have been clicked!')
-    };
     
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
@@ -32,9 +28,11 @@ export default function Map() {
         }
         setMap(map)
     }, [])
+    
     const onUnmount = React.useCallback(function callback() {
         setMap(null)
     }, [])
+
     return isLoaded ? (
         <GoogleMap
             mapContainerStyle={containerStyle}

@@ -2,7 +2,7 @@
 import Map from "./_components/map";
 import FeedSection from './_components/feed';
 import { useEffect, useState } from "react";
-import { onAuthStateChangedHelper } from "../../utils/firebase/firebase";
+import { onAuthStateChangedHelper } from "../utils/firebase/firebase";
 import { User } from "firebase/auth";
 import SignIn from "./_components/sign-in";
 
