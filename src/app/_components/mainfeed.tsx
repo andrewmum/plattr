@@ -1,21 +1,31 @@
-import { Props } from "next/script";
-import { FeedSectionProps } from "./feed";
 
 
-export default function MainFeed({ className, activeTab, clickTab}: FeedSectionProps) {
 
-    const isActive:boolean= activeTab === "mainFeed" ? true : false;
+export default function MainFeed() {
+
     return (
-        <div onClick={clickTab}>
-            <h1 className={'text-center ' + (isActive ? className : "")}>Main Feed</h1>
-            {isActive ? 
-                <div>
-                    <div className="flex flex-col items-center">
-                    < div>Post 1</div>
-                    </div>
-                </div>
-                : <></>
-            }
+        <div>
+            
+            <div>
+                <input type="search" ></input>
+            </div>
+            <div className="flex flex-row">
+                <ul>
+                    <li>Cuisine</li>
+                    <li>Price</li>
+                    <li></li>
+                    <li>filter 1</li>
+                </ul>
+            </div>
+            <div>
+                <h3>See what's popualr now</h3>
+                
+
+                {/* storie cards some day */}
+
+                {/* Image, Yelp Reviews, Google Reviews, Title Tag */}
+            </div>
+
         </div>
     )
 }

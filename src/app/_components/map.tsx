@@ -1,5 +1,5 @@
 import React from 'react'
-import { GoogleMap, InfoWindow, OverlayView, OverlayViewF, Polygon, useJsApiLoader } from '@react-google-maps/api';
+import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 
 const containerStyle: React.CSSProperties = {
     width: '100vw',

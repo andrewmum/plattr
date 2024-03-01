@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { onAuthStateChangedHelper } from "../utils/firebase/firebase";
 import { User } from "firebase/auth";
 import SignIn from "./_components/sign-in";
+import MapComponent from "./_components/testmap";
 
 export default function Home() {
   const [user, setUser] = useState<User | null>(null);
@@ -21,7 +22,7 @@ export default function Home() {
     <div>
       <div className="relative h-[100dvh] w-[100vw] mapboxgl-map">
         <div className="absolute h-full w-full justify-center pointer-events-auto">
-          <Map />
+          <MapComponent />
           <FeedSection />
 
           <div className="fixed top-10 text-white bg-gray-900/70 pt-2 pr-2 mt-1 mr-1">
