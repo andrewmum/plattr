@@ -7,39 +7,8 @@ const containerStyle: React.CSSProperties = {
   height: "100vh",
   position: "relative",
 };
-const MapComponent: React.FC = () => {
-  const mapRef = useRef<google.maps.Map>();
-  const [bounds, setBounds] = useState<
-    google.maps.LatLngBounds | google.maps.LatLngBoundsLiteral | null
-  >(null);
-  const onMapLoad = (map: google.maps.Map) => {
-    mapRef.current = map;
-  };
-
-  const searchNearbyPlaces = () => {
-    if (mapRef.current) {
-      const service = new google.maps.places.PlacesService(mapRef.current);
-      const request = {
-        location: center,
-        radius: 500,
-        type: "restaurant",
-      };
-
-      service.nearbySearch(request, (results, status) => {
-        if (status === google.maps.places.PlacesServiceStatus.OK && results) {
-          console.log(results);
-          const newMarkers = results.map((place) => ({
-            lat: place.geometry?.location?.lat() ?? 0,
-            lng: place.geometry?.location?.lng() ?? 0,
-          }));
-          setMarkers(newMarkers);
-        }
-      });
-    }
-  };
-
-  const { markers, setMarkers, center, setCenter, isLoaded } = useMap();
-
+const MapComponent = (): JSX.Element => {
+  const { markers, center, isLoaded, handleMapLoad } = useMap();
   return isLoaded ? (
     <div className="relative w-full h-screen">
       <GoogleMap
@@ -47,7 +16,7 @@ const MapComponent: React.FC = () => {
         zoom={10}
         mapContainerStyle={containerStyle}
         options={{ mapId: "e3f63456b85d9424" }}
-        onLoad={onMapLoad}
+        onLoad={handleMapLoad}
       >
         {markers.map((marker, index) => (
           <Marker key={index} position={marker} />

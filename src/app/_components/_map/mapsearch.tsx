@@ -1,17 +1,26 @@
-// SearchBoxComponent.tsx
 import React, { useRef, useEffect } from "react";
 import { StandaloneSearchBox } from "@react-google-maps/api";
 import { useMap } from "@/app/_providers/mapprovider";
 
-const SearchBoxComponent: React.FC = () => {
+const SearchBoxComponent = (): JSX.Element => {
   const searchBoxRef = useRef<google.maps.places.SearchBox | null>(null);
-  const { setMarkers, center, setCenter, isLoaded } = useMap();
+
+  const {
+    setMarkers,
+    center,
+    setCenter,
+    isLoaded,
+    map,
+    setPlaceResult,
+    mapRef,
+  } = useMap();
 
   useEffect(() => {
     if (!isLoaded || !searchBoxRef.current) return;
     const bounds = new google.maps.LatLngBounds(center, center);
     searchBoxRef.current.setBounds(bounds);
-  }, [center, setCenter]);
+    setCenter(center);
+  }, [center, setCenter, map, isLoaded]);
 
   const onLoad = (ref: google.maps.places.SearchBox) => {
     searchBoxRef.current = ref;
@@ -34,14 +43,43 @@ const SearchBoxComponent: React.FC = () => {
     }
   };
 
+  const searchNearbyPlaces = () => {
+    if (!map && !mapRef?.current) return;
+    const service = new google.maps.places.PlacesService(
+      mapRef?.current as google.maps.Map | HTMLDivElement
+    );
+    const request = {
+      location: center,
+      radius: 500,
+      type: "restaurant",
+    };
+    service.nearbySearch(request, (results, status) => {
+      if (status === google.maps.places.PlacesServiceStatus.OK && results) {
+        console.log(results);
+        const newMarkers = results.map((place) => ({
+          lat: place.geometry?.location?.lat() ?? 0,
+          lng: place.geometry?.location?.lng() ?? 0,
+        }));
+        setPlaceResult(results);
+        setMarkers(newMarkers);
+      }
+    });
+  };
+
   return isLoaded ? (
-    <StandaloneSearchBox onLoad={onLoad} onPlacesChanged={onPlacesChanged}>
-      <input
-        type="text"
-        placeholder="Search..."
-        className="border-2 bg-black border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:border-blue-500"
-      />
-    </StandaloneSearchBox>
+    <div>
+      <StandaloneSearchBox
+        onLoad={(searchBox) => onLoad(searchBox)}
+        onPlacesChanged={onPlacesChanged}
+      >
+        <input
+          type="text"
+          placeholder="Search..."
+          className="border-2 bg-black border-gray-300 rounded-md mt-2 py-1 w-2/3 pt-2 focus:outline-none focus:border-blue-500"
+        />
+      </StandaloneSearchBox>
+      <button onClick={searchNearbyPlaces}>Search here</button>
+    </div>
   ) : (
     <>Loading...</>
   );
