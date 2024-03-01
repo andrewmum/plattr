@@ -1,22 +1,21 @@
-'use client';
-import Map from "./_components/map";
-import FeedSection from './_components/feed';
+"use client";
+import FeedSection from "./_components/feed";
 import { useEffect, useState } from "react";
 import { onAuthStateChangedHelper } from "../utils/firebase/firebase";
 import { User } from "firebase/auth";
 import SignIn from "./_components/sign-in";
-import MapComponent from "./_components/testmap";
+import MapComponent from "./_components/mainmap";
 
 export default function Home() {
   const [user, setUser] = useState<User | null>(null);
-    
-  useEffect(() =>{
-      const unsubscribe = onAuthStateChangedHelper((user) => {
-          setUser(user);
-      })
 
-      return () => unsubscribe();
-  })
+  useEffect(() => {
+    const unsubscribe = onAuthStateChangedHelper((user) => {
+      setUser(user);
+    });
+
+    return () => unsubscribe();
+  });
 
   return (
     <div>
@@ -26,15 +25,15 @@ export default function Home() {
           <FeedSection />
 
           <div className="fixed top-10 text-white bg-gray-900/70 pt-2 pr-2 mt-1 mr-1">
-            {
-               user ? <h1>Welcome, {user.displayName}</h1> : <h1>Welcome, Guest</h1>
-            }
+            {user ? (
+              <h1>Welcome, {user.displayName}</h1>
+            ) : (
+              <h1>Welcome, Guest</h1>
+            )}
             <SignIn user={user} />
-
           </div>
         </div>
       </div>
-
     </div>
-  )
+  );
 }
