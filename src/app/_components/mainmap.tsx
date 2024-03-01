@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import SearchBoxComponent from "./mapsearch";
 
@@ -16,10 +16,13 @@ const MapComponent: React.FC = () => {
     lat: 40.7128,
     lng: -74.006,
   });
+  const mapRef = useRef<google.maps.Map>();
   const [bounds, setBounds] = useState<
     google.maps.LatLngBounds | google.maps.LatLngBoundsLiteral | null
   >(null);
-
+  const onMapLoad = (map: google.maps.Map) => {
+    mapRef.current = map;
+  };
   const onPlacesChanged = (places: google.maps.places.PlaceResult[]) => {
     const newMarkers = places
       .map((place) => {
@@ -32,6 +35,28 @@ const MapComponent: React.FC = () => {
       );
 
     setMarkers(newMarkers);
+  };
+
+  const searchNearbyPlaces = () => {
+    if (mapRef.current) {
+      const service = new google.maps.places.PlacesService(mapRef.current);
+      const request = {
+        location: center,
+        radius: 500,
+        type: "restaurant",
+      };
+
+      service.nearbySearch(request, (results, status) => {
+        if (status === google.maps.places.PlacesServiceStatus.OK && results) {
+          console.log(results);
+          const newMarkers = results.map((place) => ({
+            lat: place.geometry?.location?.lat() ?? 0,
+            lng: place.geometry?.location?.lng() ?? 0,
+          }));
+          setMarkers(newMarkers);
+        }
+      });
+    }
   };
   const onLocationSelected = (position: { lat: number; lng: number }) => {
     setCenter(position);
@@ -51,6 +76,12 @@ const MapComponent: React.FC = () => {
           onLocationSelected={onLocationSelected}
           bounds={bounds}
         />
+        <button
+          onClick={searchNearbyPlaces}
+          className="absolute top-10 left-10 z-20"
+        >
+          Search Nearby Restaurants
+        </button>
       </div>
       <div>
         <GoogleMap
@@ -58,6 +89,7 @@ const MapComponent: React.FC = () => {
           zoom={10}
           mapContainerStyle={containerStyle}
           options={{ mapId: "e3f63456b85d9424" }}
+          onLoad={onMapLoad}
         >
           {markers.map((marker, index) => (
             <Marker key={index} position={marker} />
