@@ -44,13 +44,14 @@ const MapComponent: React.FC = () => {
 
   if (!isLoaded) return <div>Loading...</div>;
   return (
-    <div>
-      <SearchBoxComponent
-        onPlacesChanged={onPlacesChanged}
-        onLocationSelected={onLocationSelected}
-        bounds={bounds}
-      />
-      <br />
+    <div className="relative w-full h-screen">
+      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 z-10 mt-4">
+        <SearchBoxComponent
+          onPlacesChanged={onPlacesChanged}
+          onLocationSelected={onLocationSelected}
+          bounds={bounds}
+        />
+      </div>
       <div>
         <GoogleMap
           center={center}
