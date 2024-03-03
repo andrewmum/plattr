@@ -8,7 +8,7 @@ import React, {
   useRef,
 } from "react";
 
-type Marker = { lat: number; lng: number };
+type Marker = { lat: number; lng: number; shouldHightLight: boolean };
 
 type MapContextType = {
   map: google.maps.Map | null;
@@ -64,7 +64,10 @@ export const MapProvider = ({ children }: MapProviderProps) => {
         return lat !== undefined && lng !== undefined ? { lat, lng } : null;
       })
       .filter(
-        (marker): marker is { lat: number; lng: number } => marker !== null
+        (
+          marker
+        ): marker is { lat: number; lng: number; shouldHightLight: true } =>
+          marker !== null
       );
 
     setMarkers(newMarkers);

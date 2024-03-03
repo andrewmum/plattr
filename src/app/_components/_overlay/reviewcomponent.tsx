@@ -39,12 +39,7 @@ export default function ReviewComponent({
           <p className="text-sm text-white">{location}</p>
         </div>
       </CardContent>
-      <CardFooter className="p-2 flex justify-end gap-2">
-        {/* <Button size="sm">Details</Button>
-        <Button size="sm" variant="outline">
-          Reviews
-        </Button> */}
-      </CardFooter>
+      <CardFooter className="p-2 flex justify-end gap-2"></CardFooter>
     </Card>
   );
 }

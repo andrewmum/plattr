@@ -32,6 +32,7 @@ const SearchBoxComponent = (): JSX.Element => {
         const newMarkers = places.map((place) => ({
           lat: place.geometry?.location?.lat() ?? 0,
           lng: place.geometry?.location?.lng() ?? 0,
+          shouldHightLight: true,
         }));
         setMarkers(newMarkers);
         if (places.length > 0 && places[0].geometry) {
@@ -59,6 +60,7 @@ const SearchBoxComponent = (): JSX.Element => {
         const newMarkers = results.map((place) => ({
           lat: place.geometry?.location?.lat() ?? 0,
           lng: place.geometry?.location?.lng() ?? 0,
+          shouldHightLight: true,
         }));
         setPlaceResult(results);
         setMarkers(newMarkers);
